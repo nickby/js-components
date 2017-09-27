@@ -1,0 +1,22 @@
+{
+  "name": "js-components",
+  "version": "1.0.0",
+  "description": "JS educational project (components)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickby/js-components.git"
+  },
+  "keywords": [
+    "JavaScript"
+  ],
+  "author": "Nickolay Konchits",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nickby/js-components/issues"
+  },
+  "homepage": "https://github.com/nickby/js-components#readme"
+}
