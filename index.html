@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>JS-components</title>
+
+    <link rel="stylesheet" href="src/menu/menu.css">
+    <link rel="stylesheet" href="src/form/form.css">
+</head>
+<body>
+
+<h1>Компоненты JavaScript</h1>
+
+<div class="js-app">
+    <div class="js-menu">
+
+    </div>
+    <div class="js-form">
+
+    </div>
+</div>
+
+
+<script src="src/app/app.js"></script>
+<script src="src/form/form.js"></script>
+<script src="src/menu/menu.js"></script>
+
+<script>
+    'use strict';
+    new window.App({el: document.querySelector('.js-app')});
+</script>
+
+</body>
+</html>
