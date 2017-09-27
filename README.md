@@ -1,2 +1,2 @@
-# js-components
+# JavaScript-components
 Учебный проект (компоненты)
