@@ -1,0 +1,17 @@
+js-menu, ul {
+    list-style-type: none;
+}
+
+.js-submenu {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.js-menuItem {
+    line-height: 25px;
+}
+
+.js-mainMenu {
+    text-transform: uppercase;
+}
+
