@@ -2,15 +2,13 @@
     'use strict';
 
     class Menu {
-        constructor({el, data, form}) {
+        constructor({el, data}) {
             this.$el = el;
             this.data = data;
-            this.$form = form;
 
             this.uid = 0;
 
             this.$el.addEventListener('click', this._onMenuClick.bind(this));
-            this.$el.addEventListener('addMenuItem', this._onAddMenuItem.bind(this));
         }
 
         /**
@@ -20,6 +18,20 @@
         setData(data) {
             this.data = data;
             this.render();
+        }
+
+        /**
+         * Add new item to menu data on press button Add
+         * @param data
+         */
+        addMenuItem(data) {
+            let id = data.itemParent || 0;
+
+            let item = this._getMenuItemById(this.data, id);
+            if (item) {
+                item['items'].push({title: data.itemName, items: []});
+                this.render();
+            }
         }
 
         /**
@@ -96,24 +108,6 @@
         }
 
         /**
-         * Add new item to menu data on press button Add
-         * @param event
-         * @private
-         */
-        _onAddMenuItem (event) {
-            //console.log(event);
-            if (event.detail) {
-                let id = event.detail.itemParent.split('-')[2] || 0;
-
-                let item = this._getMenuItemById(this.data, id);
-                if (item) {
-                    item['items'].push({title: event.detail.itemName, items: []});
-                    this.render();
-                }
-            }
-        }
-
-        /**
          * Fill form fields and expand menu on click
          * @param event
          * @private
@@ -121,6 +115,7 @@
         _onMenuClick(event) {
             let el = event.target.nextSibling;
 
+            // organize drop-down menu
             if (el && el.tagName === 'UL') {
                 if (el.hasAttribute('hidden')) {
                     el.removeAttribute('hidden');
@@ -129,12 +124,20 @@
                 }
             }
 
+            // generate and send event on menu item click
             if (event.target.tagName === 'SPAN') {
-                let inputParent = this.$form.querySelector('.js-input-parent');
-                inputParent.value = event.target.textContent;
-
-                let inputSpan = this.$form.querySelector('.js-input-parent-span');
-                inputSpan.value = event.target.id;
+                let newEvent = new CustomEvent(
+                    "clickMenuItem",
+                    {
+                        detail: {
+                            parent: event.target.textContent,
+                            span: event.target.id,
+                        },
+                        bubbles: true,
+                        cancelable: true
+                    }
+                );
+                this.$el.dispatchEvent(newEvent);
             }
         }
 

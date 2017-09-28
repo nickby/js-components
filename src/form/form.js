@@ -2,17 +2,12 @@
     'use strict';
 
     class Form {
-        constructor ({el, menu}) {
+        constructor ({el}) {
             this.$el = el;
-            this.$menu = menu;
-
-            this.$newItemParent = '';
-            this.$newItemSpan = '';
-            this.$newItemName = '';
         }
 
         /**
-         * Build form
+         * Build form with fields
          */
         render () {
             let frm = document.createElement('form');
@@ -21,21 +16,21 @@
 
             let inputParent = document.createElement('input');
             inputParent.setAttribute('type', 'text');
+            inputParent.setAttribute('name', 'inputParent');
             inputParent.setAttribute('placeholder', 'Root menu');
             inputParent.setAttribute('readonly', '');
             inputParent.classList.add('form-control');
             inputParent.classList.add('js-input-parent');
 
-
             let hiddenSpan = document.createElement('input');
             hiddenSpan.setAttribute('type', 'text');
+            hiddenSpan.setAttribute('name', 'hiddenSpan');
             hiddenSpan.setAttribute('hidden', '');
             hiddenSpan.classList.add('js-input-parent-span');
 
-
-
             let inputValue = document.createElement('input');
             inputValue.setAttribute('type', 'text');
+            inputValue.setAttribute('name', 'inputValue');
             inputValue.setAttribute('placeholder', 'New item name');
             inputValue.classList.add('form-control');
             inputValue.classList.add('js-input-value');
@@ -45,7 +40,6 @@
             btn.setAttribute('value', 'Add');
             btn.classList.add('btn');
             btn.classList.add('btn-primary');
-
             btn.addEventListener('click', this._onButtonClick.bind(this));
 
             frm.appendChild(inputParent);
@@ -53,9 +47,16 @@
             frm.appendChild(inputValue);
             frm.appendChild(btn);
 
-            this.$newItemParent = inputParent;
-            this.$newItemSpan = hiddenSpan;
-            this.$newItemName = inputValue;
+            this.$form = frm;
+        }
+
+        /**
+         * Fill form fields with menu data
+         * @param data
+         */
+        fillFormElements (data) {
+            this.$form.inputParent.value = data.parent;
+            this.$form.hiddenSpan.value = data.span;
         }
 
         /**
@@ -65,28 +66,28 @@
          */
         _onButtonClick (event) {
 
-            if (!this.$newItemName.value) {
+            // check item name
+            if (!this.$form.inputValue.value) {
                 alert('Please, input menu item name!');
                 return;
             }
 
+            // generate and send custom button click event
             let newEvent = new CustomEvent(
-                "addMenuItem",
+                "clickAddButton",
                 {
                     detail: {
-                        itemParent: this.$newItemSpan.value,
-                        itemName: this.$newItemName.value,
+                        itemParent: this.$form.hiddenSpan.value.split('-')[2],
+                        itemName: this.$form.inputValue.value,
                     },
                     bubbles: true,
                     cancelable: true
                 }
             );
+            this.$el.dispatchEvent(newEvent);
 
-            this.$menu.dispatchEvent(newEvent);
-
-            this.$newItemParent.value = '';
-            this.$newItemName.value = '';
-            this.$newItemSpan.value = '';
+            // clear input values after event send
+            this.$form.querySelectorAll('input[type=text]').forEach(item => item.value = '');
         }
     }
 
