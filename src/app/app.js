@@ -4,8 +4,13 @@
     class App {
         constructor({el}) {
 
+            // save found html elements
+            this.$menu = el.querySelector('.js-menu');
+            this.$form = el.querySelector('.js-form');
+
+            // create objects
             this.menu = new window.Menu({
-                el: el.querySelector('.js-menu'),
+                el: this.$menu,
                 data: {title: '', items: []}
             });
 
@@ -19,12 +24,12 @@
                 ]
             });
 
-            this.form = new window.Form({el: el.querySelector('.js-form')});
+            this.form = new window.Form({el: this.$form});
             this.form.render();
 
-            // Subscribe on custom events from Menu and Form
-            el.querySelector('.js-menu').addEventListener('clickMenuItem', this._onClickMenuItem.bind(this));
-            el.querySelector('.js-form').addEventListener('clickAddButton', this._onClickAddButton.bind(this));
+            // subscribe on custom events from Menu and Form
+            this.$menu.addEventListener('clickMenuItem', this._onClickMenuItem.bind(this));
+            this.$form.addEventListener('clickAddButton', this._onClickAddButton.bind(this));
         }
 
         /**

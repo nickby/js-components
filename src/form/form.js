@@ -33,6 +33,7 @@
             inputValue.setAttribute('name', 'inputValue');
             inputValue.setAttribute('placeholder', 'New item name');
             inputValue.classList.add('form-control');
+            inputValue.classList.add('mx-sm-1');
             inputValue.classList.add('js-input-value');
 
             let btn = document.createElement('input');
@@ -69,7 +70,7 @@
             // check item name
             if (!this.$form.inputValue.value) {
                 alert('Please, input menu item name!');
-                return;
+                throw new Error('Please, input menu item name!');
             }
 
             // generate and send custom button click event
