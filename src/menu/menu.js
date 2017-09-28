@@ -23,13 +23,19 @@
 
         _renderItem(parent, item) {
             let el = document.createElement(parent === this.$el ? 'ul' : 'li');
+
             item['id'] = ++this.uid;
+
             let span = document.createElement('span');
             span.setAttribute('id', 'js-span-'+item['id']);
             span.textContent = item['title'];
             span.classList.add('js-menuItem');
+            span.classList.add('alert');
             if (parent === this.$el){
                 span.classList.add('js-mainMenu');
+                span.classList.add('alert-primary');
+            } else {
+                span.classList.add('alert-secondary');
             }
             el.appendChild(span);
 
@@ -53,6 +59,9 @@
         }
 
         _getParentMenuItemById(item, id) {
+            if (id === 0) {
+                return item;
+            }
             if (item['id'] === +id) {
                 return item;
             } else {
@@ -67,9 +76,9 @@
         }
 
         _onAddMenuItem (event) {
-            console.log(event);
+            //console.log(event);
             if (event.detail) {
-                let id = event.detail.itemParent.split('-')[2];
+                let id = event.detail.itemParent.split('-')[2] || 0;
 
                 let item = this._getParentMenuItemById(this.data, id);
                 if (item) {
