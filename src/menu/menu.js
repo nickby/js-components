@@ -39,6 +39,7 @@
 
                 if (el.tagName === 'LI') {
                     let ul = document.createElement('ul');
+                    ul.setAttribute('hidden', '');
                     el.appendChild(ul);
                     newParent = ul;
                 }
