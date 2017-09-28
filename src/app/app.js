@@ -7,7 +7,6 @@
                 el: el.querySelector('.js-menu'),
                 data: {title: '', items: []}
             });
-            this.form = new window.Form({el: el.querySelector('.js-form')});
 
             this.menu.setData({
                 title: 'Catalogue',
@@ -25,6 +24,9 @@
                     ]},
                 ]
             });
+
+            this.form = new window.Form({el: el.querySelector('.js-form'), menu: el.querySelector('.js-menu')});
+            this.form.render();
         }
     }
 

@@ -13,5 +13,6 @@ js-menu, ul {
 
 .js-mainMenu {
     text-transform: uppercase;
+    cursor: auto;
 }
 

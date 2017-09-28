@@ -5,8 +5,9 @@
         constructor({el, data}) {
             this.$el = el;
             this.data = data;
-
-            this.$el.addEventListener('click', this._onMenuClick);
+            this.uid = 0;
+            this.$el.addEventListener('click', this._onMenuClick.bind(this));
+            this.$el.addEventListener('addMenuItem', this._onAddMenuItem.bind(this));
         }
 
         setData(data) {
@@ -16,27 +17,15 @@
 
         render() {
             if (!this.data || !this.data['title']) return;
+            this.$el.innerHTML = '';
             this._renderItem(this.$el, this.data);
-
-
-        }
-
-        _onMenuClick(event) {
-            let el = event.target.nextSibling;
-
-            if (el && el.tagName === 'UL') {
-                if (el.hasAttribute('hidden')) {
-                    el.removeAttribute('hidden');
-                } else {
-                    el.setAttribute('hidden', '');
-                }
-            }
         }
 
         _renderItem(parent, item) {
             let el = document.createElement(parent === this.$el ? 'ul' : 'li');
-
+            item['id'] = ++this.uid;
             let span = document.createElement('span');
+            span.setAttribute('id', 'js-span-'+item['id']);
             span.textContent = item['title'];
             span.classList.add('js-menuItem');
             if (parent === this.$el){
@@ -50,7 +39,6 @@
 
                 if (el.tagName === 'LI') {
                     let ul = document.createElement('ul');
-                    ul.setAttribute('hidden', '');
                     el.appendChild(ul);
                     newParent = ul;
                 }
@@ -62,6 +50,54 @@
 
             parent.appendChild(el);
         }
+
+        _getParentMenuItemById(item, id) {
+            if (item['id'] === +id) {
+                return item;
+            } else {
+                for (let i = 0; i < item['items'].length; i++) {
+                    let result = this._getParentMenuItemById(item['items'][i], id);
+                    if (result) {
+                        return result;
+                    }
+                }
+            }
+            return null;
+        }
+
+        _onAddMenuItem (event) {
+            console.log(event);
+            if (event.detail) {
+                let id = event.detail.itemParent.split('-')[2];
+
+                let item = this._getParentMenuItemById(this.data, id);
+                if (item) {
+                    item['items'].push({title: event.detail.itemName, items: []});
+                    this.render();
+                }
+            }
+        }
+
+        _onMenuClick(event) {
+            let el = event.target.nextSibling;
+
+            if (el && el.tagName === 'UL') {
+                if (el.hasAttribute('hidden')) {
+                    el.removeAttribute('hidden');
+                } else {
+                    el.setAttribute('hidden', '');
+                }
+            }
+
+            if (event.target.tagName === 'SPAN') {
+                let inputParent = this.$el.parentNode.querySelector('.js-input-parent');
+                inputParent.value = event.target.textContent;
+
+                let inputSpan = this.$el.parentNode.querySelector('.js-input-parent-span');
+                inputSpan.value = event.target.id;
+            }
+        }
+
     }
 
     // export
