@@ -3,16 +3,15 @@ js-menu, ul {
 }
 
 .js-submenu {
-    cursor: pointer;
     font-weight: bold;
 }
 
 .js-menuItem {
+    cursor: pointer;
     line-height: 50px;
 }
 
 .js-mainMenu {
     text-transform: uppercase;
-    cursor: auto;
 }
 
