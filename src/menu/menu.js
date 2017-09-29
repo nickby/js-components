@@ -50,7 +50,9 @@
          * @private
          */
         _renderItem(parent, item) {
-            item['id'] = ++this.uid;
+            if (item['id'] === undefined) {
+                item['id'] = ++this.uid;
+            }
 
             let el = document.createElement(parent === this.$el ? 'ul' : 'li');
 

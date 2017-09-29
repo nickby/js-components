@@ -88,7 +88,7 @@
             this.$el.dispatchEvent(newEvent);
 
             // clear input values after event send
-            this.$form.querySelectorAll('input[type=text]').forEach(item => item.value = '');
+            // this.$form.querySelectorAll('input[type=text]').forEach(item => item.value = '');
         }
     }
 
